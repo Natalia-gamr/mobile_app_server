@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import fetch from 'node-fetch'; 
 
 const app = express();
 app.use(express.json()); // для парсинга JSON
@@ -235,18 +236,29 @@ let profile_json = {
 
 // Эндпоинт для приёма сообщений
 app.get('/auth', async (req: Request, res: Response) => {
-  const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/auth');
-  const auth_json = await response.json();
-  res.status(200).json(auth_json[0]);
+  try {
+    const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/auth');
+    const auth_json: any = await response.json();
+    res.status(200).json(auth_json[0]);
+  } catch (error) {
+    console.error('Ошибка при получении JSON:', error);
+    res.status(500).json({ error: 'Не удалось получить JSON' });
+  }
+  
 });
 
 app.post('/auth', async (req: Request, res: Response) => {
     const message = req.body;
     if (message.login == 'admin' && message.password == 'admin') {
-      const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/main');
-      const _profile_json = await response.json();
-      profile_json = _profile_json[0];
-      res.status(200).json( "success")
+      try {
+        const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/main');
+        const _profile_json: any = await response.json();
+        profile_json = _profile_json[0];
+        res.status(200).json( "success")
+      } catch (error) {
+        console.error('Ошибка при получении JSON:', error);
+        res.status(500).json({ error: 'Не удалось получить JSON' });
+      }
     } else {
       res.status(200).json("failure")
     }
