@@ -264,16 +264,6 @@ app.post('/auth', async (req: Request, res: Response) => {
     }
 });
 
-// app.get('/check_auth', (req: Request, res: Response) => {
-//   const message = req.body;
-//   console.log('Получено сообщение123:', message);
-//   if (message.login == 'admin' && message.password == '1234') {
-//     res.status(200).json(true)
-//   } else {
-//     res.status(200).json(false)
-//   }
-  
-// });
   
 app.get('/profile', (req: Request, res: Response) => {
   res.status(200).json(profile_json)
