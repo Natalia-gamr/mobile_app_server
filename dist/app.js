@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const node_fetch_1 = __importDefault(require("node-fetch"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json()); // для парсинга JSON
 app.use((0, cors_1.default)());
@@ -231,7 +230,7 @@ let profile_json = {
 // Эндпоинт для приёма сообщений
 app.get('/auth', async (req, res) => {
     try {
-        const response = await (0, node_fetch_1.default)('https://67f61e0f913986b16fa6c712.mockapi.io/auth');
+        const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/auth');
         const auth_json = await response.json();
         res.status(200).json(auth_json[0]);
     }
@@ -244,7 +243,7 @@ app.post('/auth', async (req, res) => {
     const message = req.body;
     if (message.login == 'admin' && message.password == 'admin') {
         try {
-            const response = await (0, node_fetch_1.default)('https://67f61e0f913986b16fa6c712.mockapi.io/main');
+            const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/main');
             const _profile_json = await response.json();
             profile_json = _profile_json[0];
             res.status(200).json("success");
