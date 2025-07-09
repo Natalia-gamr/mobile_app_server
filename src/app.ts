@@ -235,6 +235,7 @@ let profile_json = {
 
 // Эндпоинт для приёма сообщений
 app.get('/auth', async (req: Request, res: Response) => {
+  console.log('Get auth');
   try {
     const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/auth');
     const auth_json: any = await response.json();
@@ -246,7 +247,26 @@ app.get('/auth', async (req: Request, res: Response) => {
   
 });
 
+app.options('/auth', async (req: Request, res: Response) => {
+    console.log('options auth');
+    const message = req.body;
+    if (message.login == 'admin' && message.password == 'admin') {
+      try {
+        const response = await fetch('https://67f61e0f913986b16fa6c712.mockapi.io/main');
+        const _profile_json: any = await response.json();
+        profile_json = _profile_json[0];
+        res.status(200).json( "success")
+      } catch (error) {
+        console.error('Ошибка при получении JSON:', error);
+        res.status(500).json({ error: 'Не удалось получить JSON' });
+      }
+    } else {
+      res.status(200).json("failure")
+    }
+});
+
 app.post('/auth', async (req: Request, res: Response) => {
+    console.log('Post auth');
     const message = req.body;
     if (message.login == 'admin' && message.password == 'admin') {
       try {
@@ -265,6 +285,7 @@ app.post('/auth', async (req: Request, res: Response) => {
 
   
 app.get('/profile', (req: Request, res: Response) => {
+  console.log('Get profile');
   res.status(200).json(profile_json)
 });
 
