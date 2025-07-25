@@ -247,7 +247,7 @@ app.get('/auth', async (req: Request, res: Response) => {
   
 });
 
-app.put('/auth_put', async (req: Request, res: Response) => {
+app.post('/auth', async (req: Request, res: Response) => {
     console.log('options auth');
     const message = req.body;
     if (message.login == 'admin' && message.password == 'admin') {
